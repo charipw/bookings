@@ -13,7 +13,7 @@ import (
 	"github.com/alexedwards/scs/v2"
 )
 
-const portNumber = ":8080"
+const portNumber = "localhost:8080"
 
 var app config.AppConfig
 var session *scs.SessionManager
@@ -45,7 +45,7 @@ func main() {
 
 	render.NewTemplates(&app)
 
-	fmt.Println(fmt.Sprintf("Staring application on port %s", portNumber))
+	fmt.Println(fmt.Sprintf("Starting application on %s", portNumber))
 
 	srv := &http.Server{
 		Addr:    portNumber,
