@@ -6,9 +6,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/charipw/bookings/pkg/config"
-	"github.com/charipw/bookings/pkg/models"
-	"github.com/charipw/bookings/pkg/render"
+	"github.com/charipw/bookings/internal/config"
+	"github.com/charipw/bookings/internal/models"
+	"github.com/charipw/bookings/internal/render"
 )
 
 // Repo the repository used by the handlers

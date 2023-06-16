@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/charipw/bookings/pkg/config"
-	"github.com/charipw/bookings/pkg/handlers"
-	"github.com/charipw/bookings/pkg/render"
+	"github.com/charipw/bookings/internal/config"
+	"github.com/charipw/bookings/internal/handlers"
+	"github.com/charipw/bookings/internal/render"
 
 	"github.com/alexedwards/scs/v2"
 )
