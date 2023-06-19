@@ -8,7 +8,10 @@
 
         <form method="post" action="/make-reservation" class="" novalidate>
           <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
-          <div class="form-group mt-3">
+          {{with .Form.Errors.Get "first_name"}}
+            <label class="text-danger">{{.}}</label>
+          {{end}}
+          <div class="form-group {{with .Form.Errors.Get "first_name"}} is-invalid {{end}}">
             <label for="first_name">First Name:</label>
             <input
               class="form-control"
