@@ -1,0 +1,22 @@
+mode: set
+github.com/charipw/bookings/internal/handlers/handlers.go:24.47,28.2 1 1
+github.com/charipw/bookings/internal/handlers/handlers.go:31.33,33.2 1 1
+github.com/charipw/bookings/internal/handlers/handlers.go:36.67,41.2 3 1
+github.com/charipw/bookings/internal/handlers/handlers.go:44.68,56.2 5 1
+github.com/charipw/bookings/internal/handlers/handlers.go:59.74,68.2 4 1
+github.com/charipw/bookings/internal/handlers/handlers.go:70.78,72.16 2 1
+github.com/charipw/bookings/internal/handlers/handlers.go:72.16,75.3 2 0
+github.com/charipw/bookings/internal/handlers/handlers.go:76.2,89.19 6 1
+github.com/charipw/bookings/internal/handlers/handlers.go:89.19,98.3 4 0
+github.com/charipw/bookings/internal/handlers/handlers.go:100.2,102.67 2 1
+github.com/charipw/bookings/internal/handlers/handlers.go:107.71,109.2 1 1
+github.com/charipw/bookings/internal/handlers/handlers.go:112.69,114.2 1 1
+github.com/charipw/bookings/internal/handlers/handlers.go:117.75,119.2 1 1
+github.com/charipw/bookings/internal/handlers/handlers.go:122.79,127.2 3 1
+github.com/charipw/bookings/internal/handlers/handlers.go:135.79,141.16 3 1
+github.com/charipw/bookings/internal/handlers/handlers.go:141.16,143.3 1 0
+github.com/charipw/bookings/internal/handlers/handlers.go:145.2,146.14 2 1
+github.com/charipw/bookings/internal/handlers/handlers.go:150.70,152.2 1 1
+github.com/charipw/bookings/internal/handlers/handlers.go:154.81,156.9 2 1
+github.com/charipw/bookings/internal/handlers/handlers.go:156.9,161.3 4 1
+github.com/charipw/bookings/internal/handlers/handlers.go:163.2,169.4 4 0
