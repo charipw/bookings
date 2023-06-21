@@ -10,6 +10,7 @@
         <form method="post" action="/make-reservation" class="" novalidate>
           <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
 
+
             <div class="form-group mt-3 ">
               <label for="first_name">First Name:</label>
               {{with .Form.Errors.Get "first_name"}}
@@ -41,6 +42,19 @@
               required
             />
           </div>
+
+          <div class="form-group">
+            <label for="start_date">Start Date:</label>
+            <input class="form-control" type="text" name="start_date" id="start_date">
+          </div>
+
+          <div class="form-group">
+            <label for="end_date">End Date:</label>
+            <input class="form-control" type="text" name="end_date" id="end_date">
+          </div>
+
+          <input type="hidden" name="room_id" value="1">
+
 
           <div class="form-group">
             <label for="email">Email:</label>
