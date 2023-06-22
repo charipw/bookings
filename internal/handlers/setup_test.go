@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"testing"
 	"time"
 
 	"github.com/alexedwards/scs/v2"
@@ -23,65 +24,70 @@ var session *scs.SessionManager
 var pathToTemplates = "./../../templates"
 var functions = template.FuncMap{}
 
-func getRoutes() http.Handler {
+func TestMain(m *testing.M) {
 	gob.Register(models.Reservation{})
-		// change this to true when in production
-		app.InProduction = false
+	// change this to true when in production
+	app.InProduction = false
 
-		infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
-		app.InfoLog = infoLog
-	
-		errorLog := log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
-		app.ErrorLog = errorLog
-	
-		// set up the session
-		session = scs.New()
-		session.Lifetime = 24 * time.Hour
-		session.Cookie.Persist = true
-		session.Cookie.SameSite = http.SameSiteLaxMode
-		session.Cookie.Secure = app.InProduction
-	
-		app.Session = session
-	
-		tc, err := CreateTestTemplateCache()
-		if err != nil {
-			log.Fatal("cannot create template cache")
-		}
-	
-		app.TemplateCache = tc
-		app.UseCache = true
-	
-		repo := NewTestRepo(&app)
-		NewHandlers(repo)
-	
-		render.NewRenderer(&app)
+	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+	app.InfoLog = infoLog
 
-		mux := chi.NewRouter()
+	errorLog := log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+	app.ErrorLog = errorLog
 
-		mux.Use(middleware.Recoverer)
-		// mux.Use(NoSurf)
-		mux.Use(SessionLoad)
+	// set up the session
+	session = scs.New()
+	session.Lifetime = 24 * time.Hour
+	session.Cookie.Persist = true
+	session.Cookie.SameSite = http.SameSiteLaxMode
+	session.Cookie.Secure = app.InProduction
 
-		mux.Get("/", Repo.Home)
-		mux.Get("/about", Repo.About)
-		mux.Get("/generals-quarters", Repo.Generals)
-		mux.Get("/majors-suite", Repo.Majors)
-		mux.Get("/search-availability", Repo.Availability)
-		mux.Post("/search-availability", Repo.PostAvailability)
-		mux.Post("/search-availability-json", Repo.AvailabilityJSON)
-		
-		
-		mux.Get("/contact", Repo.Contact)
-		
-		mux.Get("/make-reservation", Repo.Reservation)
-		mux.Post("/make-reservation", Repo.PostReservation)
-		mux.Get("/reservation-summary", Repo.ReservationSummary)
+	app.Session = session
 
-		fileServer := http.FileServer(http.Dir("./static/"))
-		mux.Handle("/static/*", http.StripPrefix("/static", fileServer))
+	tc, err := CreateTestTemplateCache()
+	if err != nil {
+		log.Fatal("cannot create template cache")
+	}
 
-		return mux
-		
+	app.TemplateCache = tc
+	app.UseCache = true
+
+	repo := NewTestRepo(&app)
+	NewHandlers(repo)
+
+	render.NewRenderer(&app)
+
+	os.Exit(m.Run())
+}
+
+func getRoutes() http.Handler {	
+
+	mux := chi.NewRouter()
+
+	mux.Use(middleware.Recoverer)
+	// mux.Use(NoSurf)
+	mux.Use(SessionLoad)
+
+	mux.Get("/", Repo.Home)
+	mux.Get("/about", Repo.About)
+	mux.Get("/generals-quarters", Repo.Generals)
+	mux.Get("/majors-suite", Repo.Majors)
+	mux.Get("/search-availability", Repo.Availability)
+	mux.Post("/search-availability", Repo.PostAvailability)
+	mux.Post("/search-availability-json", Repo.AvailabilityJSON)
+	
+	
+	mux.Get("/contact", Repo.Contact)
+	
+	mux.Get("/make-reservation", Repo.Reservation)
+	mux.Post("/make-reservation", Repo.PostReservation)
+	mux.Get("/reservation-summary", Repo.ReservationSummary)
+
+	fileServer := http.FileServer(http.Dir("./static/"))
+	mux.Handle("/static/*", http.StripPrefix("/static", fileServer))
+
+	return mux
+	
 }
 
 func NoSurf(next http.Handler) http.Handler {
