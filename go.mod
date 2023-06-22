@@ -19,6 +19,8 @@ require (
 	github.com/justinas/nosurf v1.1.1 // indirect
 	github.com/nbutton23/zxcvbn-go v0.0.0-20210217022336-fa2cb2858354 // indirect
 	github.com/securego/gosec/v2 v2.16.0 // indirect
+	github.com/toorop/go-dkim v0.0.0-20201103131630-e1cd1a0a5208 // indirect
+	github.com/xhit/go-simple-mail/v2 v2.13.0 // indirect
 	github.com/xo/terminfo v0.0.0-20220910002029-abceb7e1c41e // indirect
 	golang.org/x/crypto v0.9.0 // indirect
 	golang.org/x/mod v0.11.0 // indirect
