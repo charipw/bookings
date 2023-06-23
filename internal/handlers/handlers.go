@@ -12,6 +12,7 @@ import (
 	"github.com/charipw/bookings/internal/config"
 	"github.com/charipw/bookings/internal/driver"
 	"github.com/charipw/bookings/internal/forms"
+	"github.com/charipw/bookings/internal/helpers"
 	"github.com/charipw/bookings/internal/models"
 	"github.com/charipw/bookings/internal/render"
 	"github.com/charipw/bookings/internal/repository"
@@ -508,7 +509,17 @@ func (m *Repository) PostShowLogin(w http.ResponseWriter, r *http.Request) {
 	}
 
 	func (m *Repository) AdminAllReservations(w http.ResponseWriter, r *http.Request) {
-		render.Template(w, r, "admin-all-reservations.page.tmpl", &models.TemplateData{})
+		reservations, err := m.DB.AllReservations()
+		if err != nil {
+			helpers.ServerError(w, err)
+			return
+		}
+		data := make(map[string]interface{})
+		data["reservations"] = reservations
+
+		render.Template(w, r, "admin-all-reservations.page.tmpl", &models.TemplateData{
+			Data: data,
+		})
 	}
 
 	func (m *Repository) AdminReservationsCalendar(w http.ResponseWriter, r *http.Request) {
