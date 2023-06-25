@@ -623,3 +623,12 @@ func (m *Repository) PostShowLogin(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, fmt.Sprintf("/admin/reservations-%s", src), http.StatusSeeOther)
 	}
 
+	// AdminDeleteReservation deletes a reservation
+	func (m *Repository) AdminDeleteReservation(w http.ResponseWriter, r *http.Request) {
+		id, _ := strconv.Atoi(chi.URLParam(r, "id"))
+		src := chi.URLParam(r, "src")
+		_ = m.DB.DeleteReservation(id)
+		m.App.Session.Put(r.Context(), "flash", "Reservation deleted")
+		http.Redirect(w, r, fmt.Sprintf("/admin/reservations-%s", src), http.StatusSeeOther)
+	}
+
