@@ -753,7 +753,10 @@ func (m *Repository) PostShowLogin(w http.ResponseWriter, r *http.Request) {
 					if val > 0 {
 						if !form.Has(fmt.Sprintf("remove_block_%d_%s", x.ID, name)) {
 							// delete the restriction by id
-							log.Println("would delete block", value)
+							err := m.DB.DeleteBlockById(value)
+							if err != nil {
+								log.Println(err)
+							}
 						}
 					}
 				}
@@ -764,11 +767,14 @@ func (m *Repository) PostShowLogin(w http.ResponseWriter, r *http.Request) {
 			if strings.HasPrefix(name, "add_block") {
 				exploded := strings.Split(name, "_")
 				roomId, _ := strconv.Atoi(exploded[2])
+				t, _ := time.Parse("2006-01-2", exploded[3])
 				// insert a new block
-				log.Println("would insert block for room id", roomId, "for date", exploded[3])
+				err := m.DB.InsertBlockForRoom(roomId, t)
+				if err != nil {
+					log.Println(err)
+				}
 			}
 		}
-
 
 		m.App.Session.Put(r.Context(), "flash", "Changes saved")
 		http.Redirect(w, r, fmt.Sprintf("/admin/reservations-calendar?y=%d&m=%d", year, month), http.StatusSeeOther)
