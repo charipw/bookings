@@ -661,7 +661,7 @@ func (m *Repository) PostShowLogin(w http.ResponseWriter, r *http.Request) {
 			reservationMap := make(map[string]int)
 			blockMap := make(map[string]int)
 
-			for d := firstOfMonth; d.After(lastOfMonth) == false; d = d.AddDate(0, 0, 1) {
+			for d := firstOfMonth; !d.After(lastOfMonth); d = d.AddDate(0, 0, 1) {
 				reservationMap[d.Format("2006-01-2")] = 0
 				blockMap[d.Format("2006-01-2")] = 0
 			}
@@ -676,12 +676,14 @@ func (m *Repository) PostShowLogin(w http.ResponseWriter, r *http.Request) {
 			for _, y := range restrictions {
 				if y.ReservationID > 0 {
 					// it's a reservation
-					for d := y.StartDate; d.After(y.EndDate) == false; d = d.AddDate(0, 0, 1) {
+					for d := y.StartDate; !d.After(y.EndDate); d = d.AddDate(0, 0, 1) {
 						reservationMap[d.Format("2006-01-2")] = y.ReservationID
 					}
 				} else {
 					// it's a block
-					blockMap[y.StartDate.Format("2006-01-2")] = y.ReservationID
+					for d := y.StartDate; !d.After(y.EndDate); d = d.AddDate(0, 0, 1) {
+						blockMap[d.Format("2006-01-2")] = y.ID
+					}
 
 				}
 			}
