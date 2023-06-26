@@ -721,3 +721,7 @@ func (m *Repository) PostShowLogin(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, fmt.Sprintf("/admin/reservations-%s", src), http.StatusSeeOther)
 	}
 
+	// AdminPostReservationsCalendar handles post of reservation calendar
+	func (m *Repository) AdminPostReservationsCalendar(w http.ResponseWriter, r *http.Request) {
+		log.Println("Works")
+	}
