@@ -554,6 +554,13 @@ func (m *Repository) PostShowLogin(w http.ResponseWriter, r *http.Request) {
 
 		stringMap := make(map[string]string)
 		stringMap["src"] = src
+		// fmt.Println(stringMap)
+
+		year := r.URL.Query().Get("y")
+		month:= r.URL.Query().Get("m")
+
+		stringMap["month"] = month
+		stringMap["year"] = year
 
 		// get resservation from the db
 		res, err := m.DB.GetReservationByID(id)
@@ -598,7 +605,6 @@ func (m *Repository) PostShowLogin(w http.ResponseWriter, r *http.Request) {
 
 		stringMap["month"] = month
 		stringMap["year"] = year
-	
 
 		res, err := m.DB.GetReservationByID(id)
 		if err != nil {

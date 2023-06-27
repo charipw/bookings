@@ -83,6 +83,7 @@
               required
             />
           </div>
+        </form>
 
           <hr />
             <div class="float-start">
@@ -98,16 +99,13 @@
                 <a href="/admin/reservations-{{$src}}" class="btn btn-warning">Cancel</a>
               {{end}}
               {{if eq $res.Processed 0}}
-                <a href="/admin/reservations-{{$src}}" class="btn btn-info" onclick="processRes({{$res.ID}})">Mark as Processed</a>
+                <button class="btn btn-info" onclick="processRes({{$res.ID}})">Mark as Processed</button>
               {{end}}
-            </div>
-
+            </div>            
             <div class="float-end">
-              <a href="/admin/reservations-{{$src}}" class="btn btn-danger" onclick="deleteRes({{$res.ID}})">Delete</a>
+              <button class="btn btn-danger" onclick="deleteRes({{$res.ID}})">Delete</button>
             </div>
-            
             <div class="clearfix"></div>
-        </form>
     </div>
 {{end}}
 

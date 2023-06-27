@@ -71,10 +71,10 @@ func run() (*driver.DB, error) {
 	app.ErrorLog = errorLog
 
 	session = scs.New()
-	session.Lifetime = 24 * time.Hour
-	session.Cookie.Persist = true
-	session.Cookie.SameSite = http.SameSiteLaxMode
-	session.Cookie.Secure = app.InProduction
+	session.Lifetime = 24 * time.Hour // How long session will last
+	session.Cookie.Persist = true    // Persist session across browser restarts
+	session.Cookie.SameSite = http.SameSiteLaxMode	// SameSiteLaxMode: cookies are not sent on requests initiated by third party websites
+	session.Cookie.Secure = app.InProduction // Cookie only sent over HTTPS
 
 	app.Session = session
 
