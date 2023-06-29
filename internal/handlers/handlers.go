@@ -63,6 +63,7 @@ func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
 
 // Reservation renders the make a reservation page and displays form
 func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
+	// Pulls the reservation from the session
 	res, ok := m.App.Session.Get(r.Context(), "reservation").(models.Reservation)
 	if !ok {
 		m.App.Session.Put(r.Context(), "error", "can't get reservation from session")
@@ -81,9 +82,11 @@ func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) {
 
 	m.App.Session.Put(r.Context(), "reservation", res)
 
+	// Converts start and end dates into the correct format
 	sd := res.StartDate.Format("2006-01-02")
 	ed := res.EndDate.Format("2006-01-02")
 
+	// Creates a string map from TemplateData to hold the dates
 	stringMap := make(map[string]string)
 	stringMap["start_date"] = sd
 	stringMap["end_date"] = ed
@@ -111,23 +114,24 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 	ed := r.Form.Get("end_date")
 
 	// 2020-01-01 -- 01/02 03:04:05PM '06 -0700
-
+	// Layout describes the dates format are received from the form YYYY-MM-DD
 	layout := "2006-01-02"
 
+	// Parse the start date into the required format
 	startDate, err := time.Parse(layout, sd)
 	if err != nil {
 		m.App.Session.Put(r.Context(), "error", "can't parse start date")
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
-
+	// Parse the end date into the required format
 	endDate, err := time.Parse(layout, ed)
 	if err != nil {
 		m.App.Session.Put(r.Context(), "error", "can't get parse end date")
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
-
+	// Convert the room id from string to int
 	roomID, err := strconv.Atoi(r.Form.Get("room_id"))
 	if err != nil {
 		m.App.Session.Put(r.Context(), "error", "invalid data!")
@@ -167,14 +171,14 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 		})
 		return
 	}
-
+	// Writes the information into the database
 	newReservationID, err := m.DB.InsertReservation(reservation)
 	if err != nil {
 		m.App.Session.Put(r.Context(), "error", "can't insert reservation into database!")
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
-
+	// Builds a new Room Restriction model
 	restriction := models.RoomRestriction{
 		StartDate:     startDate,
 		EndDate:       endDate,
@@ -182,7 +186,7 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 		ReservationID: newReservationID,
 		RestrictionID: 1,
 	}
-
+	// Writes the information into the database
 	err = m.DB.InsertRoomRestriction(restriction)
 	if err != nil {
 		m.App.Session.Put(r.Context(), "error", "can't insert room restriction!")
@@ -190,7 +194,7 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// send notification - first to guest
+	// send email notification - first to guest
 	htmlMessage := fmt.Sprintf(`
 		<strong>Reservation Confirmation</strong><br>
 		Dear %s: <br>
@@ -206,7 +210,7 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 
 	m.App.MailChan <- msg
 
-	// send notification - to property owner
+	// send email notification - to property owner
 
 	htmlMessage = fmt.Sprintf(`
 		<strong>Reservation Notification</strong><br>
@@ -275,7 +279,7 @@ func (m *Repository) PostAvailability(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
-
+	// Checks if a room is available within rooms
 	if len(rooms) == 0 {
 		// no availability
 		m.App.Session.Put(r.Context(), "error", "No availability")
@@ -383,6 +387,7 @@ func (m *Repository) ReservationSummary(w http.ResponseWriter, r *http.Request) 
 
 	sd := reservation.StartDate.Format("2006-01-02")
 	ed := reservation.EndDate.Format("2006-01-02")
+
 	stringMap := make(map[string]string)
 	stringMap["start_date"] = sd
 	stringMap["end_date"] = ed
@@ -467,6 +472,7 @@ func (m *Repository) ShowLogin(w http.ResponseWriter, r *http.Request) {
 
 // PostShowLogin handles logging the user in
 func (m *Repository) PostShowLogin(w http.ResponseWriter, r *http.Request) {
+	// Prevent session fixation attacks
 	_ = m.App.Session.RenewToken(r.Context())
 	// parse the form
 	err := r.ParseForm()

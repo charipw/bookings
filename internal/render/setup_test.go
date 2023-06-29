@@ -17,7 +17,7 @@ var session *scs.SessionManager
 var testApp config.AppConfig
 
 func TestMain(m *testing.M) {
-
+	// what I am going to put in the session
 	gob.Register(models.Reservation{})
 
 	// change this to true when in production

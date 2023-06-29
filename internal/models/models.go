@@ -48,7 +48,7 @@ type Reservation struct {
 	Processed int
 }
 
-// RoomRestrictions is the room restriction model
+// RoomRestriction is the room restriction model
 type RoomRestriction struct {
 	ID            int
 	StartDate     time.Time

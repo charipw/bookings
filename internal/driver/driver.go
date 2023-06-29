@@ -55,7 +55,7 @@ func NewDatabase(dsn string) (*sql.DB, error) {
 	if err != nil {
 		return nil, err
 	}
-
+	// Test the DB connection
 	if err = db.Ping(); err != nil {
 		return nil, err
 	}

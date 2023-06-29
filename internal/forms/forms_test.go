@@ -8,7 +8,9 @@ import (
 )
 
 func TestForm_Valid(t *testing.T) {
+	// Create a new http test request
 	r := httptest.NewRequest("POST", "/whatever", nil)
+	// Creates a new empty form
 	form := New(r.PostForm)
 
 	isValid := form.Valid()
@@ -21,15 +23,19 @@ func TestForm_Required(t *testing.T) {
 	r := httptest.NewRequest("POST", "/whatever", nil)
 	form := New(r.PostForm)
 
+	
 	form.Required("a", "b", "c")
 	if form.Valid() {
 		t.Error("form shows valid when required fields missing")
 	}
+
+	// Creates own type of url.Values
 	postedData := url.Values{}
 	postedData.Add("a", "a")
 	postedData.Add("b", "a")
 	postedData.Add("c", "a")
 
+	// Overwrites the request with the new values
 	r, _ = http.NewRequest("POST", "/whatever", nil)
 
 	r.PostForm = postedData
@@ -96,7 +102,7 @@ func TestForm_MinLength(t *testing.T) {
 
 	isError = form.Errors.Get("another_field")
 	if isError != "" {
-		t.Error("should not have an error but gotone")
+		t.Error("should not have an error but got one")
 	}
 }
 

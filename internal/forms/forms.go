@@ -36,15 +36,6 @@ func (f *Form) Required(fields ...string) {
 	}
 }
 
-// Has checks if form field is in post and not empty
-func (f *Form) Has(field string) bool {
-	x := f.Get(field)
-	if x == "" {
-		f.Errors.Add(field, "This field cannot be blank")
-		return false
-	}
-	return true
-}
 
 // MinLength checks for string minimum length
 func (f *Form) MinLength(field string, length int) bool {

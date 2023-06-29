@@ -16,15 +16,16 @@ func (m *postgresDBRepo) AllUsers() bool {
 
 // InsertReservation inserts a reservation into the database
 func (m *postgresDBRepo) InsertReservation(res models.Reservation) (int, error) {
+	// If the transaction goes longer than 3 seconds, it dies
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
 	var newID int
 
-
 	stmt := `insert into reservations (first_name, last_name, email, phone, start_date, end_date, room_id, created_at, updated_at)
 	values ($1, $2, $3, $4, $5, $6, $7, $8, $9) returning id`
 
+	
 	err:= m.DB.QueryRowContext(ctx, stmt,
 		res.FirstName,
 		res.LastName,
@@ -45,6 +46,7 @@ func (m *postgresDBRepo) InsertReservation(res models.Reservation) (int, error) 
 }
 // InsertRoomRestriction insert a room restriction into the db
 func (m *postgresDBRepo) InsertRoomRestriction(r models.RoomRestriction) error {
+	// If the transaction goes longer than 3 seconds, it dies
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
@@ -199,7 +201,7 @@ func (m *postgresDBRepo) GetUserByID(id int) (models.User, error) {
 	}
 	return u, nil
 }
-
+// UpdateUser updates a user in the database
 func (m *postgresDBRepo) UpdateUser(u models.User) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
@@ -228,7 +230,9 @@ func (m *postgresDBRepo) Authenticate(email, testPassword string) (int, string, 
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
+	// id holds the user id if they are successfully authenticated
 	var id int
+	// hashedPassword holds the hashed password for the user with the given email
 	var hashedPassword string
 
 	row := m.DB.QueryRowContext(ctx, "select id, password from users where email = $1", email)
@@ -236,6 +240,7 @@ func (m *postgresDBRepo) Authenticate(email, testPassword string) (int, string, 
 	if err != nil {
 		return id, "", err
 	}
+	// Compare the password with the hashed password
 	err = bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(testPassword))
 	if err == bcrypt.ErrMismatchedHashAndPassword {
 		return 0, "", errors.New("incorrect password")

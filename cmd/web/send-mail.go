@@ -11,6 +11,7 @@ import (
 	mail "github.com/xhit/go-simple-mail/v2"
 )
 
+// listenForMail is used to listen for new mail being sent to the application
 func listenForMail() {
 	go func() {
 		for {
@@ -33,6 +34,7 @@ func sendMsg(m models.MailData) {
 	if err != nil {
 		errorLog.Println(err)
 	}
+	// Creates a new empty message
 	email := mail.NewMSG()
 	email.SetFrom(m.From).AddTo(m.To).SetSubject(m.Subject)
 	if m.Template == "" {

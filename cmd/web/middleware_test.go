@@ -6,6 +6,7 @@ import (
 	"testing"
 )
 
+// TestNoSurf tests if the output of NoSurf is of type http.Handler
 func TestNoSurf(t *testing.T) {
 	var myH myHandler
 	h := NoSurf(&myH)
@@ -18,6 +19,7 @@ func TestNoSurf(t *testing.T) {
 	}
 }
 
+// TestSessionLoad tests if the output of SessionLoad is of type http.Handler
 func TestSessionLoad(t *testing.T) {
 	var myH myHandler
 	h := SessionLoad(&myH)
