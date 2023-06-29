@@ -9,3 +9,7 @@
 .datepicker {
   z-index: 10000;
 }
+
+body {
+  font-family: "Open Sans", "Helvetica", sans-serif;
+}

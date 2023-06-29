@@ -411,7 +411,7 @@ func (m *postgresDBRepo) UpdateReservation(u models.Reservation) error {
 
 	return nil
 }
-
+// DeleteReservation deletes one reservation by ID
 func (m *postgresDBRepo) DeleteReservation(id int) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()

@@ -14,6 +14,7 @@ import (
 	"github.com/justinas/nosurf"
 )
 
+// Specifies functions that can be used in the templates
 var functions = template.FuncMap{
 	"humanDate": HumanDate,
 	"formatDate": FormatDate,

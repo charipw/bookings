@@ -42,6 +42,7 @@ func routes(app *config.AppConfig) http.Handler {
 	mux.Handle("/static/*", http.StripPrefix("/static", fileServer))
 
 	mux.Route("/admin", func(mux chi.Router) {
+		// Commented out so that when we run the app in development, we don't need to always login when reloading
 		// mux.Use(Auth)
 		mux.Get("/dashboard", handlers.Repo.AdminDashboard)
 
