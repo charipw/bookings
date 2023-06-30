@@ -202,7 +202,7 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 
 	msg := models.MailData{
 		To:	reservation.Email,
-		From:	"me@here.com",
+		From:	"info@charleen-cottage.com",
 		Subject:	"Reservation Confirmation",
 		Content:	htmlMessage,
 		Template: "basic.html",
@@ -217,8 +217,8 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 		A reservation has been made for %s from %s to %s.`, reservation.Room.RoomName,reservation.StartDate.Format("2006-01-02"), reservation.EndDate.Format("2006-01-02"))
 
 	msg = models.MailData{
-		To:	"me@here.com",
-		From:	"me@here.com",
+		To:	"info@charleen-cottage.com",
+		From:	"info@charleen-cottage.com",
 		Subject:	"Reservation Notification",
 		Content:	htmlMessage,
 		Template: "basic.html",
@@ -821,7 +821,7 @@ func (m *Repository) PostShowLogin(w http.ResponseWriter, r *http.Request) {
 				}
 			}
 		}
-		// now handle new blocks
+		// now handle adding new blocks
 		for name, _ := range r.PostForm {
 			if strings.HasPrefix(name, "add_block") {
 				exploded := strings.Split(name, "_")

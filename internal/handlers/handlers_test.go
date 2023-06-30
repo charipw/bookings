@@ -655,7 +655,7 @@ var loginTests = []struct {
 }{
 	{
 		"valid-credentials",
-		"me@here.ca",
+		"info@charleen-cottage.com",
 		http.StatusSeeOther,
 		"",
 		"/",
